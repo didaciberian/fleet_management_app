@@ -80,3 +80,11 @@
 - [x] Configurar DATABASE_URL en variables d'entorn
 - [x] Verificar connexió a la base de dades
 - [x] Provar autenticació i accés a l'aplicació
+
+## Fase 12: Despliegue en Replit
+- [x] Crear archivo .replit con configuración
+- [x] Crear archivo replit.nix con dependencias
+- [x] Crear documentación de despliegue en Replit
+- [x] Probar despliegue en Replit
+- [x] Verificar acceso desde múltiples ordenadores
+- [x] Crear guía para compañeros

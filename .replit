@@ -1,0 +1,13 @@
+run = "pnpm install && pnpm build && pnpm start"
+entrypoint = "server/_core/index.ts"
+
+[env]
+NODE_ENV = "production"
+PORT = "3000"
+
+[nix]
+channel = "stable-23_11"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
