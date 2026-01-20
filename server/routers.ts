@@ -1,5 +1,6 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { sdk } from "./_core/sdk";
 import { systemRouter } from "./_core/systemRouter";
 import { publicProcedure, router, protectedProcedure, authorizedProcedure } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
@@ -32,6 +33,32 @@ import { z } from "zod";
 export const appRouter = router({
   system: systemRouter,
   auth: router({
+    login: publicProcedure
+      .input(z.object({ password: z.string() }))
+      .mutation(async ({ input, ctx }) => {
+        const appPassword = "fleetIrds2026";
+        if (input.password !== appPassword) {
+          throw new TRPCError({
+            code: "UNAUTHORIZED",
+            message: "Contraseña incorrecta",
+          });
+        }
+        const token = Buffer.from(
+          JSON.stringify({
+            authenticated: true,
+            timestamp: Date.now(),
+          })
+        ).toString("base64");
+        
+        // Set session cookie
+        sdk.setSessionCookie(ctx.res, token);
+        
+        return {
+          success: true,
+          message: "Login exitoso",
+          token,
+        };
+      }),
     me: publicProcedure.query(opts => opts.ctx.user),
     logout: publicProcedure.mutation(({ ctx }) => {
       const cookieOptions = getSessionCookieOptions(ctx.req);

@@ -100,3 +100,11 @@
 - [ ] Verificar conexión a Supabase
 - [ ] Solucionar problema de autenticación
 - [ ] Testar login correctamente
+
+## Fase 15: Migración a Autenticación Simple para Replit
+- [ ] Crear sistema de autenticación con email/contraseña
+- [ ] Remover dependencias de Manus OAuth
+- [ ] Crear página de login simple
+- [ ] Implementar registro de usuarios
+- [ ] Testar en Replit
+- [ ] Crear checkpoint final para Replit

@@ -15,6 +15,13 @@
       "when": 1768892358016,
       "tag": "0001_spotty_selene",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1768917207653,
+      "tag": "0002_quiet_stepford_cuckoos",
+      "breakpoints": true
     }
   ]
 }
