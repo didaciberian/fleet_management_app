@@ -74,3 +74,9 @@
 - [x] Testejar cerca i filtrat
 - [x] Testejar alertes visuals
 - [x] Crear checkpoint final
+
+## Fase 11: Configuració de Supabase
+- [x] Obtenir cadena de connexió de Supabase
+- [x] Configurar DATABASE_URL en variables d'entorn
+- [x] Verificar connexió a la base de dades
+- [x] Provar autenticació i accés a l'aplicació
