@@ -1,10 +1,35 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router } from "./_core/trpc";
+import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { TRPCError } from "@trpc/server";
+import {
+  createVanSchema,
+  updateVanSchema,
+  vanFilterSchema,
+  createAveriaSchema,
+  updateAveriaSchema,
+  searchSchema,
+} from "@shared/schemas";
+import {
+  getAllVans,
+  getVanById,
+  searchVans,
+  filterVans,
+  createVan,
+  updateVan,
+  deleteVan,
+  getAveriasByVanId,
+  getAllAverias,
+  getAveriaById,
+  createAveria,
+  updateAveria,
+  deleteAveria,
+  getMetrics,
+} from "./db";
+import { z } from "zod";
 
 export const appRouter = router({
-    // if you need to use socket.io, read and register route in server/_core/index.ts, all api should start with '/api/' so that the gateway can route correctly
   system: systemRouter,
   auth: router({
     me: publicProcedure.query(opts => opts.ctx.user),
@@ -17,12 +42,257 @@ export const appRouter = router({
     }),
   }),
 
-  // TODO: add feature routers here, e.g.
-  // todo: router({
-  //   list: protectedProcedure.query(({ ctx }) =>
-  //     db.getUserTodos(ctx.user.id)
-  //   ),
-  // }),
+  // ============ TABLA_VANS Procedures ============
+  vans: router({
+    // Get all vans
+    list: protectedProcedure.query(async () => {
+      try {
+        return await getAllVans();
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch vans",
+        });
+      }
+    }),
+
+    // Get van by ID
+    getById: protectedProcedure
+      .input(z.object({ id: z.number().int() }))
+      .query(async ({ input }) => {
+        try {
+          const van = await getVanById(input.id);
+          if (!van) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Van not found",
+            });
+          }
+          return van;
+        } catch (error) {
+          if (error instanceof TRPCError) throw error;
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch van",
+          });
+        }
+      }),
+
+    // Search vans by matricula or VIN
+    search: protectedProcedure
+      .input(searchSchema)
+      .query(async ({ input }) => {
+        try {
+          return await searchVans(input.query);
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to search vans",
+          });
+        }
+      }),
+
+    // Filter vans
+    filter: protectedProcedure
+      .input(vanFilterSchema)
+      .query(async ({ input }) => {
+        try {
+          return await filterVans(input);
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to filter vans",
+          });
+        }
+      }),
+
+    // Create van
+    create: protectedProcedure
+      .input(createVanSchema)
+      .mutation(async ({ input }) => {
+        try {
+          const result = await createVan(input);
+          return { success: true, id: (result as any).insertId || 0 };
+        } catch (error: any) {
+          if (error.code === "ER_DUP_ENTRY") {
+            throw new TRPCError({
+              code: "CONFLICT",
+              message: "VIN or MATRICULA already exists",
+            });
+          }
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to create van",
+          });
+        }
+      }),
+
+    // Update van
+    update: protectedProcedure
+      .input(
+        z.object({
+          id: z.number().int(),
+          data: updateVanSchema,
+        })
+      )
+      .mutation(async ({ input }) => {
+        try {
+          await updateVan(input.id, input.data);
+          return { success: true };
+        } catch (error: any) {
+          if (error.code === "ER_DUP_ENTRY") {
+            throw new TRPCError({
+              code: "CONFLICT",
+              message: "VIN or MATRICULA already exists",
+            });
+          }
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to update van",
+          });
+        }
+      }),
+
+    // Delete van
+    delete: protectedProcedure
+      .input(z.object({ id: z.number().int() }))
+      .mutation(async ({ input }) => {
+        try {
+          await deleteVan(input.id);
+          return { success: true };
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete van",
+          });
+        }
+      }),
+  }),
+
+  // ============ VANS_AVERIAS Procedures ============
+  averias: router({
+    // Get all averias
+    list: protectedProcedure.query(async () => {
+      try {
+        return await getAllAverias();
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch averias",
+        });
+      }
+    }),
+
+    // Get averias by van ID
+    getByVanId: protectedProcedure
+      .input(z.object({ vanId: z.number().int() }))
+      .query(async ({ input }) => {
+        try {
+          return await getAveriasByVanId(input.vanId);
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch averias",
+          });
+        }
+      }),
+
+    // Get averia by ID
+    getById: protectedProcedure
+      .input(z.object({ id: z.number().int() }))
+      .query(async ({ input }) => {
+        try {
+          const averia = await getAveriaById(input.id);
+          if (!averia) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Averia not found",
+            });
+          }
+          return averia;
+        } catch (error) {
+          if (error instanceof TRPCError) throw error;
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to fetch averia",
+          });
+        }
+      }),
+
+    // Create averia
+    create: protectedProcedure
+      .input(createAveriaSchema)
+      .mutation(async ({ input }) => {
+        try {
+          // Verify van exists
+          const van = await getVanById(input.ID);
+          if (!van) {
+            throw new TRPCError({
+              code: "NOT_FOUND",
+              message: "Van not found",
+            });
+          }
+
+          const result = await createAveria(input);
+          return { success: true, id: (result as any).insertId || 0 };
+        } catch (error) {
+          if (error instanceof TRPCError) throw error;
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to create averia",
+          });
+        }
+      }),
+
+    // Update averia
+    update: protectedProcedure
+      .input(
+        z.object({
+          id: z.number().int(),
+          data: updateAveriaSchema,
+        })
+      )
+      .mutation(async ({ input }) => {
+        try {
+          await updateAveria(input.id, input.data);
+          return { success: true };
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to update averia",
+          });
+        }
+      }),
+
+    // Delete averia
+    delete: protectedProcedure
+      .input(z.object({ id: z.number().int() }))
+      .mutation(async ({ input }) => {
+        try {
+          await deleteAveria(input.id);
+          return { success: true };
+        } catch (error) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Failed to delete averia",
+          });
+        }
+      }),
+  }),
+
+  // ============ Metrics ============
+  metrics: router({
+    getDashboard: protectedProcedure.query(async () => {
+      try {
+        return await getMetrics();
+      } catch (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Failed to fetch metrics",
+        });
+      }
+    }),
+  }),
 });
 
 export type AppRouter = typeof appRouter;
