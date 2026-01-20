@@ -88,3 +88,9 @@
 - [x] Probar despliegue en Replit
 - [x] Verificar acceso desde múltiples ordenadores
 - [x] Crear guía para compañeros
+
+## Fase 13: Restricción de Acceso por Dominio de Email
+- [x] Implementar validación de dominio @iberianrd.es en el backend
+- [x] Crear página de acceso denegado
+- [x] Testar restricción con emails válidos e inválidos
+- [x] Crear checkpoint con restricción de acceso

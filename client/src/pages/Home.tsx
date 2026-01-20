@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Loader2, Plus } from "lucide-react";
 import { VansList } from "@/components/VansList";
@@ -11,14 +12,26 @@ import { trpc } from "@/lib/trpc";
 
 type ViewMode = "list" | "create" | "edit" | "detail";
 
+const ALLOWED_EMAIL_DOMAIN = "@iberianrd.es";
+
 export default function Home() {
   const { user, loading, isAuthenticated } = useAuth();
+  const [, setLocation] = useLocation();
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [selectedVan, setSelectedVan] = useState<any>(null);
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
 
   const { data: allVans, refetch: refetchVans } = trpc.vans.list.useQuery();
+
+  // Verificar si el usuario tiene permiso de acceso
+  useEffect(() => {
+    if (!loading && isAuthenticated && user) {
+      if (!user.email || !user.email.endsWith(ALLOWED_EMAIL_DOMAIN)) {
+        setLocation("/access-denied");
+      }
+    }
+  }, [loading, isAuthenticated, user, setLocation]);
 
   if (loading) {
     return (

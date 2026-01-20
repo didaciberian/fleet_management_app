@@ -1,7 +1,7 @@
 import { COOKIE_NAME } from "@shared/const";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
-import { publicProcedure, router, protectedProcedure } from "./_core/trpc";
+import { publicProcedure, router, protectedProcedure, authorizedProcedure } from "./_core/trpc";
 import { TRPCError } from "@trpc/server";
 import {
   createVanSchema,
@@ -45,7 +45,7 @@ export const appRouter = router({
   // ============ TABLA_VANS Procedures ============
   vans: router({
     // Get all vans
-    list: protectedProcedure.query(async () => {
+    list: authorizedProcedure.query(async () => {
       try {
         return await getAllVans();
       } catch (error) {
@@ -57,7 +57,7 @@ export const appRouter = router({
     }),
 
     // Get van by ID
-    getById: protectedProcedure
+    getById: authorizedProcedure
       .input(z.object({ id: z.number().int() }))
       .query(async ({ input }) => {
         try {
@@ -79,7 +79,7 @@ export const appRouter = router({
       }),
 
     // Search vans by matricula or VIN
-    search: protectedProcedure
+    search: authorizedProcedure
       .input(searchSchema)
       .query(async ({ input }) => {
         try {
@@ -93,7 +93,7 @@ export const appRouter = router({
       }),
 
     // Filter vans
-    filter: protectedProcedure
+    filter: authorizedProcedure
       .input(vanFilterSchema)
       .query(async ({ input }) => {
         try {
@@ -107,7 +107,7 @@ export const appRouter = router({
       }),
 
     // Create van
-    create: protectedProcedure
+    create: authorizedProcedure
       .input(createVanSchema)
       .mutation(async ({ input }) => {
         try {
@@ -128,7 +128,7 @@ export const appRouter = router({
       }),
 
     // Update van
-    update: protectedProcedure
+    update: authorizedProcedure
       .input(
         z.object({
           id: z.number().int(),
@@ -154,7 +154,7 @@ export const appRouter = router({
       }),
 
     // Delete van
-    delete: protectedProcedure
+    delete: authorizedProcedure
       .input(z.object({ id: z.number().int() }))
       .mutation(async ({ input }) => {
         try {
@@ -172,7 +172,7 @@ export const appRouter = router({
   // ============ VANS_AVERIAS Procedures ============
   averias: router({
     // Get all averias
-    list: protectedProcedure.query(async () => {
+    list: authorizedProcedure.query(async () => {
       try {
         return await getAllAverias();
       } catch (error) {
@@ -184,7 +184,7 @@ export const appRouter = router({
     }),
 
     // Get averias by van ID
-    getByVanId: protectedProcedure
+    getByVanId: authorizedProcedure
       .input(z.object({ vanId: z.number().int() }))
       .query(async ({ input }) => {
         try {
@@ -198,7 +198,7 @@ export const appRouter = router({
       }),
 
     // Get averia by ID
-    getById: protectedProcedure
+    getById: authorizedProcedure
       .input(z.object({ id: z.number().int() }))
       .query(async ({ input }) => {
         try {
@@ -220,7 +220,7 @@ export const appRouter = router({
       }),
 
     // Create averia
-    create: protectedProcedure
+    create: authorizedProcedure
       .input(createAveriaSchema)
       .mutation(async ({ input }) => {
         try {
@@ -245,7 +245,7 @@ export const appRouter = router({
       }),
 
     // Update averia
-    update: protectedProcedure
+    update: authorizedProcedure
       .input(
         z.object({
           id: z.number().int(),
@@ -265,7 +265,7 @@ export const appRouter = router({
       }),
 
     // Delete averia
-    delete: protectedProcedure
+    delete: authorizedProcedure
       .input(z.object({ id: z.number().int() }))
       .mutation(async ({ input }) => {
         try {
@@ -282,7 +282,7 @@ export const appRouter = router({
 
   // ============ Metrics ============
   metrics: router({
-    getDashboard: protectedProcedure.query(async () => {
+    getDashboard: authorizedProcedure.query(async () => {
       try {
         return await getMetrics();
       } catch (error) {
