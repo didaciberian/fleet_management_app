@@ -94,3 +94,9 @@
 - [x] Crear página de acceso denegado
 - [x] Testar restricción con emails válidos e inválidos
 - [x] Crear checkpoint con restricción de acceso
+
+## Fase 14: Solución de Error OAuth
+- [ ] Diagnosticar error de OAuth callback
+- [ ] Verificar conexión a Supabase
+- [ ] Solucionar problema de autenticación
+- [ ] Testar login correctamente

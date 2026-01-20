@@ -1,4 +1,4 @@
-run = "pnpm install && pnpm build && pnpm start"
+run = "npm install -g pnpm && pnpm install && pnpm build && pnpm start"
 entrypoint = "server/_core/index.ts"
 
 [env]
