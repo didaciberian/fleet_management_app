@@ -51,7 +51,7 @@ export const appRouter = router({
         ).toString("base64");
         
         // Set session cookie
-        sdk.setSessionCookie(ctx.res, token);
+        sdk.setSessionCookie(ctx.res, token, ctx.req);
         
         return {
           success: true,

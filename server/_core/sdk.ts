@@ -62,11 +62,10 @@ export class SDKServer {
     }
   }
 
-  setSessionCookie(res: Response, token: string) {
-    const cookieOptions = getSessionCookieOptions({
-      protocol: "https",
-      headers: {},
-    } as any);
+  setSessionCookie(res: Response, token: string, req?: Request) {
+    const cookieOptions = getSessionCookieOptions(
+      req || ({ protocol: "https", headers: {} } as any)
+    );
 
     res.cookie(COOKIE_NAME, token, {
       ...cookieOptions,

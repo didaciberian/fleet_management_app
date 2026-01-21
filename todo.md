@@ -131,5 +131,8 @@
 - [x] Revisar cómo se está usando el token en las consultas tRPC
 - [x] Agregar listener de eventos de storage en App.tsx
 - [x] Disparar evento de storage cuando se guarda/elimina el token
+- [x] Crear test de integración para verificar flujo de login
+- [x] Corregir cómo se está configurando la cookie en el servidor
+- [x] Pasar el req real a setSessionCookie
 - [x] Probar el flujo de login manualmente
 - [x] Resolver el problema de persistencia de sesión
