@@ -115,3 +115,11 @@
 - [ ] Implementar seguimiento de combustible
 - [ ] Implementar gestión de mantenimiento
 - [ ] Crear reportes y análisis
+
+## Fase 16: Debugging de Login
+- [x] Diagnosticar por qué el login no funciona con appIrds2026
+- [x] Revisar el flujo de autenticación en el cliente
+- [x] Revisar el flujo de autenticación en el servidor
+- [x] Modificar DashboardLayout para verificar sessionToken antes de hacer consultas tRPC
+- [x] Probar el login con la contraseña correcta
+- [x] Resolver el problema de login

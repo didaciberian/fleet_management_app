@@ -48,17 +48,22 @@ export default function DashboardLayout({
   });
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const hasToken = typeof window !== 'undefined' && !!localStorage.getItem('sessionToken');
   const meQuery = trpc.auth.me.useQuery(undefined, {
     retry: false,
     refetchOnWindowFocus: false,
+    enabled: hasToken,
   });
 
   useEffect(() => {
-    if (!meQuery.isLoading) {
+    if (!hasToken) {
+      setUser(null);
+      setLoading(false);
+    } else if (!meQuery.isLoading) {
       setUser(meQuery.data ?? null);
       setLoading(false);
     }
-  }, [meQuery.data, meQuery.isLoading]);
+  }, [meQuery.data, meQuery.isLoading, hasToken]);
 
   useEffect(() => {
     localStorage.setItem(SIDEBAR_WIDTH_KEY, sidebarWidth.toString());
