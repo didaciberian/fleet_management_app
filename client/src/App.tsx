@@ -23,6 +23,18 @@ function Router() {
     setIsLoading(false);
   }, []);
 
+  useEffect(() => {
+    // Listen for storage changes (e.g., when login happens)
+    const handleStorageChange = () => {
+      const token = localStorage.getItem("sessionToken");
+      console.log("[Router] Storage changed. Token:", !!token);
+      setIsAuthenticated(!!token);
+    };
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Cargando...</div>;
   }

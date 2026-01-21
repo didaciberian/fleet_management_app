@@ -123,3 +123,13 @@
 - [x] Modificar DashboardLayout para verificar sessionToken antes de hacer consultas tRPC
 - [x] Probar el login con la contraseña correcta
 - [x] Resolver el problema de login
+
+## Fase 17: Debugging de Persistencia de Sesión
+- [x] Diagnosticar por qué el token no se persiste después del login
+- [x] Revisar cómo se está guardando el token en localStorage
+- [x] Revisar cómo se está validando el token en el servidor
+- [x] Revisar cómo se está usando el token en las consultas tRPC
+- [x] Agregar listener de eventos de storage en App.tsx
+- [x] Disparar evento de storage cuando se guarda/elimina el token
+- [x] Probar el flujo de login manualmente
+- [x] Resolver el problema de persistencia de sesión

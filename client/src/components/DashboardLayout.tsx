@@ -138,6 +138,8 @@ function DashboardLayoutContent({
     try {
       await logoutMutation.mutateAsync();
       localStorage.removeItem("sessionToken");
+      // Dispatch storage event to notify other listeners
+      window.dispatchEvent(new Event("storage"));
       window.location.href = "/login";
     } catch (error) {
       console.error("Logout error:", error);

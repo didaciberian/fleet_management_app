@@ -26,6 +26,8 @@ export default function Login() {
       if (result.success) {
         // Store session token in localStorage
         localStorage.setItem("sessionToken", result.token);
+        // Dispatch storage event to notify other listeners
+        window.dispatchEvent(new Event("storage"));
         // Redirect to home page - no reload needed
         setLocation("/");
       } else {
