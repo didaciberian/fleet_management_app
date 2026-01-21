@@ -24,18 +24,16 @@ export default function Login() {
       if (result.success) {
         // Store session token in localStorage
         localStorage.setItem("sessionToken", result.token);
-        // Redirect to dashboard
+        // Redirect to home page - no reload needed
         setLocation("/");
-        // Reload to update authentication state
-        window.location.reload();
       } else {
         setError(result.message || "Contraseña incorrecta");
       }
     } catch (err: any) {
+      console.error("Login error:", err);
       setError(
-        err?.message || "Contraseña incorrecta"
+        err?.message || err?.data?.message || "Contraseña incorrecta"
       );
-      console.error(err);
     } finally {
       setIsLoading(false);
     }
