@@ -96,15 +96,21 @@
 - [x] Crear checkpoint con restricción de acceso
 
 ## Fase 14: Solución de Error OAuth
-- [ ] Diagnosticar error de OAuth callback
-- [ ] Verificar conexión a Supabase
-- [ ] Solucionar problema de autenticación
-- [ ] Testar login correctamente
+- [x] Diagnosticar error de OAuth callback
+- [x] Verificar conexión a Supabase
+- [x] Solucionar problema de autenticación
+- [x] Crear página de login simple con autenticación por contraseña
+- [x] Implementar procedimiento tRPC para login
+- [x] Implementar almacenamiento de sessionToken en localStorage
+- [x] Configurar rutas protegidas con verificación de autenticación
+- [ ] Resolver problema de caché del navegador (preview muestra login correcto, pero navegador muestra página antigua)
+- [ ] Testar login correctamente en navegador
 
-## Fase 15: Migración a Autenticación Simple para Replit
-- [ ] Crear sistema de autenticación con email/contraseña
-- [ ] Remover dependencias de Manus OAuth
-- [ ] Crear página de login simple
-- [ ] Implementar registro de usuarios
-- [ ] Testar en Replit
-- [ ] Crear checkpoint final para Replit
+## Fase 15: Funcionalidades de Gestión de Flota
+- [ ] Crear página de inicio/dashboard
+- [ ] Implementar gestión de vehículos
+- [ ] Implementar gestión de conductores
+- [ ] Implementar seguimiento de rutas
+- [ ] Implementar seguimiento de combustible
+- [ ] Implementar gestión de mantenimiento
+- [ ] Crear reportes y análisis

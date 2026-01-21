@@ -18,6 +18,7 @@ function Router() {
   useEffect(() => {
     // Check if user has session token
     const token = localStorage.getItem("sessionToken");
+    console.log("[Router] Checking authentication. Token:", !!token);
     setIsAuthenticated(!!token);
     setIsLoading(false);
   }, []);
@@ -26,8 +27,17 @@ function Router() {
     return <div className="flex items-center justify-center min-h-screen">Cargando...</div>;
   }
 
+  console.log("[Router] Rendering. isAuthenticated:", isAuthenticated);
+
   if (!isAuthenticated) {
-    return <Login />;
+    return (
+      <ThemeProvider defaultTheme="light">
+        <TooltipProvider>
+          <Toaster />
+          <Login />
+        </TooltipProvider>
+      </ThemeProvider>
+    );
   }
 
   return (
