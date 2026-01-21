@@ -41,7 +41,7 @@ describe("auth.login", () => {
     const { ctx } = createAuthContext();
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.auth.login({ password: "fleetIrds2026" });
+    const result = await caller.auth.login({ password: "appIrds2026" });
 
     expect(result.success).toBe(true);
     expect(result.token).toBeDefined();
@@ -65,7 +65,7 @@ describe("auth.login", () => {
     const { ctx } = createAuthContext();
     const caller = appRouter.createCaller(ctx);
 
-    const result = await caller.auth.login({ password: "fleetIrds2026" });
+    const result = await caller.auth.login({ password: "appIrds2026" });
 
     // Decode the token
     const decoded = JSON.parse(Buffer.from(result.token, "base64").toString());

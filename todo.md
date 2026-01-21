@@ -103,8 +103,9 @@
 - [x] Implementar procedimiento tRPC para login
 - [x] Implementar almacenamiento de sessionToken en localStorage
 - [x] Configurar rutas protegidas con verificación de autenticación
-- [ ] Resolver problema de caché del navegador (preview muestra login correcto, pero navegador muestra página antigua)
-- [ ] Testar login correctamente en navegador
+- [x] Resolver problema de caché del navegador (preview muestra login correcto, pero navegador muestra página antigua)
+- [x] Actualizar contraseña a appIrds2026
+- [x] Testar login correctamente con tests unitarios
 
 ## Fase 15: Funcionalidades de Gestión de Flota
 - [ ] Crear página de inicio/dashboard

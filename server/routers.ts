@@ -36,7 +36,7 @@ export const appRouter = router({
     login: publicProcedure
       .input(z.object({ password: z.string() }))
       .mutation(async ({ input, ctx }) => {
-        const appPassword = "fleetIrds2026";
+        const appPassword = "appIrds2026";
         if (input.password !== appPassword) {
           throw new TRPCError({
             code: "UNAUTHORIZED",
