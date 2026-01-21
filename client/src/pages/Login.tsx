@@ -19,7 +19,9 @@ export default function Login() {
     setIsLoading(true);
 
     try {
+      console.log("Attempting login with password...");
       const result = await loginMutation.mutateAsync({ password });
+      console.log("Login result:", result);
 
       if (result.success) {
         // Store session token in localStorage

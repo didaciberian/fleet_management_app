@@ -34,13 +34,7 @@ const requireAuthorizedDomain = t.middleware(async opts => {
     throw new TRPCError({ code: "UNAUTHORIZED", message: UNAUTHED_ERR_MSG });
   }
 
-  if (!ctx.user.email || !ctx.user.email.endsWith(ALLOWED_EMAIL_DOMAIN)) {
-    throw new TRPCError({
-      code: "FORBIDDEN",
-      message: `Solo se permite el acceso con emails que terminen en ${ALLOWED_EMAIL_DOMAIN}`,
-    });
-  }
-
+  // Authorization check removed - allow all authenticated users
   return next({
     ctx: {
       ...ctx,
